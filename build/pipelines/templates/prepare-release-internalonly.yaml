@@ -62,7 +62,7 @@ jobs:
         targetFolder: $(Build.ArtifactStagingDirectory)\vpack\appxBundle
 
   - task: PkgESVPack@10
-    displayName: Create and push vpack for app
+    displayName: Create and push VPack for app
     env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     inputs:
@@ -72,11 +72,24 @@ jobs:
         version: $(versionMajor).$(versionMinor).$(versionBuild)
         owner: paxeeapps
 
-  - task: PublishBuildArtifacts@1
-    displayName: Publish vpack\app artifact with vpack manifest
+  - task: CopyFiles@2
+    displayName: Copy VPack manifest to staging folder
     inputs:
-        pathtoPublish: $(XES_VPACKMANIFESTDIRECTORY)\$(XES_VPACKMANIFESTNAME)
-        artifactName: vpack\app
+        sourceFolder: $(XES_VPACKMANIFESTDIRECTORY)
+        contents: $(XES_VPACKMANIFESTNAME)
+        targetFolder: $(Build.ArtifactStagingDirectory)\vpackmanifest
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish VPackManifest artifact
+    inputs:
+        pathtoPublish: $(Build.ArtifactStagingDirectory)\vpackmanifest
+        artifactName: VPackManifest
+
+  - task: PkgESFCIBGit@10
+    displayName: Submit VPack manifest to Windows OS rs_apps_validate branch
+    inputs:
+      configPath: $(Build.SourcesDirectory)\build\config\rs_apps_validate.json
+      dropOverride: $(Build.ArtifactStagingDirectory)\vpackmanifest
 
     # TODO (macool): create and push internal test packages and test config
 

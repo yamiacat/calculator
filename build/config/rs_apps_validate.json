@@ -7,12 +7,12 @@
             "name":"official/rs_apps_validate",
             "CheckinFiles": [
                 {
-                    "source":"vpack/app/calculator.app.man",
+                    "source":"calculator.app.man",
                     "path": "/redist/mspartners/ipa/Calculator",
                     "type": "File"
                 },
                 {
-                    "source":"vpack/app/calculator.app.man",
+                    "source":"calculator.app.man",
                     "path": "/onecoreuap/redist/mspartners/ipa/Calculator",
                     "type": "File"
                 }
